@@ -11,7 +11,10 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
         <property name="ignoreResourceNotFound" value="true" />
+
         <property name="locations">
             <list>
                 <value>file:c:/UICDS/ServerApps/xchangecore/core.properties</value>
@@ -43,11 +46,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         <property name="password">
             <value>${xmpp.core.password}</value>
         </property>
-        <!-- 
         <property name="coreLatLon">
             <value>${core.latlon}</value>
         </property>
-         -->
         <!--
             <property name="coreConfigFile">
             <value>${install.home.dir}\ServerApps\uicds\config\resources\config.xml</value>
