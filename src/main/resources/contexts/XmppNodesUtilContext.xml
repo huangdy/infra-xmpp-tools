@@ -9,7 +9,7 @@
 
         <property name="locations">
             <list>
-                <value>file:c:/UICDS/ServerApps/xchangecore/core.properties</value>
+                <value>../ServerApps/xchangecore/core.properties</value>
             </list>
         </property>
     </bean>
@@ -17,7 +17,7 @@
     <!-- XMPP beans -->
     <!-- Replace server, servername, and pubsub's host name as appropriate -->
 
-    <bean id="baseCoreConnection" abstract="true"
+    <bean id="baseCoreConnection" abstract="true" destroy-method="cleanup" init-method="initialize"
         class="com.leidos.xchangecore.core.infrastructure.xmpp.communications.CoreConnectionImpl">
 
         <property name="server">
@@ -41,14 +41,6 @@
         <property name="coreLatLon">
             <value>${core.latlon}</value>
         </property>
-        <!--
-            <property name="coreConfigFile">
-            <value>${install.home.dir}\ServerApps\uicds\config\resources\config.xml</value>
-            </property>
-        -->
-        <property name="name">
-            <value>UICDS</value>
-        </property>
         <property name="resource">
             <value>CoreConnection</value>
         </property>
@@ -61,13 +53,18 @@
         <property name="waitTimeInSeconds">
             <value>10</value>
         </property>
+        <property name="pingInterval">
+            <value>${pingInterval}</value>
+        </property>
+    </bean>
+
+    <bean id="baseInterestManager" abstract="true" init-method="initialize"
+        class="com.leidos.xchangecore.core.infrastructure.xmpp.communications.InterestManagerImpl">
     </bean>
 
     <bean id="coreConnection" parent="baseCoreConnection" />
 
-    <bean id="interestManager"
-        class="com.leidos.xchangecore.core.infrastructure.xmpp.communications.InterestManagerImpl"
-        init-method="initialize">
+    <bean id="interestManager" parent="baseInterestManager"> 
         <property name="coreConnection" ref="coreConnection" />
     </bean>
 

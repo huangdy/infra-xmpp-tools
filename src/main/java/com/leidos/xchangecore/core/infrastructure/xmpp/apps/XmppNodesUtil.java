@@ -13,6 +13,13 @@ import com.leidos.xchangecore.core.infrastructure.xmpp.communications.CoreConnec
 
 public class XmppNodesUtil {
 
+    private static final Object DisplayNodesCommand = "-d";
+
+    private static final Object CleanupNodesCommand = "-c";
+
+    static Logger logger = Logger.getLogger(XmppNodesUtil.class);
+    static String ContextFile = "XmppNodesUtilContext.xml";
+
     synchronized private static ApplicationContext initContext(String contextFile) {
 
         final String localContextFile = "./" + contextFile;
@@ -22,17 +29,17 @@ public class XmppNodesUtil {
             logger.debug("initContext: Using local context file: " + localContextFile);
         } catch (final BeanDefinitionStoreException e) {
             if (e.getCause() instanceof FileNotFoundException) {
-                logger.debug("initContext: Local Context File: " + localContextFile
-                        + " not found, will load the default contexts path");
+                logger.debug("initContext: Local Context File: " + localContextFile +
+                             " not found, will load the default contexts path");
                 try {
-                    context = new ClassPathXmlApplicationContext(new String[] { "contexts/"
-                            + contextFile });
+                    context = new ClassPathXmlApplicationContext(new String[] {
+                        "contexts/" + contextFile
+                    });
                 } catch (final Exception ee) {
                     logger.error("initContext: Cannot load from classpath: " + ee.getMessage());
                 }
-            } else {
+            } else
                 logger.error("initContext: Loading Context File: " + e.getCause().getMessage());
-            }
         }
 
         return context;
@@ -59,20 +66,12 @@ public class XmppNodesUtil {
             System.out.println("Display all nodes ...");
             final List<String> nodeList = util.getCoreXMPPUtils().getAllNodesRecursivly();
             System.out.println("+++++ Display Nodes +++++");
-            for (final String node : nodeList) {
+            for (final String node : nodeList)
                 System.out.println("\tNode: " + node);
-            }
             System.out.println("+++++++++++++++++++++++++");
         }
-        util.getCoreConnection().disconnect();
+        // util.getCoreConnection().disconnect();
     }
-
-    private static final Object DisplayNodesCommand = "-d";
-    private static final Object CleanupNodesCommand = "-c";
-
-    static Logger logger = Logger.getLogger(XmppNodesUtil.class);
-
-    static String ContextFile = "XmppNodesUtilContext.xml";
     private CoreConnection coreConnection;
 
     private CoreXMPPUtils coreXMPPUtils;
